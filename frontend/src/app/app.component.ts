@@ -101,11 +101,13 @@ export class AppComponent implements OnInit, OnDestroy {
   pools: Pool[] = [];                          // Array of mining pool data
   dashboardData: DashboardData | null = null;  // Aggregated dashboard statistics
   isLoading = true;                             // Loading state for UI
+  selectedImage: string = '';                   // Random jumbotron background image
   
   // Configuration and subscriptions
   private refreshSubscription?: Subscription;   // RxJS subscription for auto-refresh
   private readonly API_BASE = 'http://localhost:3000/api';  // Backend API base URL
   private readonly REFRESH_INTERVAL = 30000;   // Auto-refresh interval (30 seconds)
+  private readonly JUMBOTRON_IMAGES = ['Whisk_14048fc946.jpg', 'Whisk_66ec472097.jpg'];
 
   /**
    * Component constructor - inject HTTP client for API calls
@@ -121,6 +123,7 @@ export class AppComponent implements OnInit, OnDestroy {
    * Initializes the component by loading data and starting auto-refresh
    */
   ngOnInit(): void {
+    this.selectRandomImage();   // Select random jumbotron image
     this.loadInitialData();     // Load initial dashboard data
     this.startAutoRefresh();    // Start automatic data refresh
   }
@@ -138,6 +141,14 @@ export class AppComponent implements OnInit, OnDestroy {
   // ================================================================
   // DATA LOADING METHODS
   // ================================================================
+  
+  /**
+   * Select a random image for the jumbotron background
+   */
+  private selectRandomImage(): void {
+    const randomIndex = Math.floor(Math.random() * this.JUMBOTRON_IMAGES.length);
+    this.selectedImage = `assets/images/${this.JUMBOTRON_IMAGES[randomIndex]}`;
+  }
   
   /**
    * Load initial dashboard data from the backend API

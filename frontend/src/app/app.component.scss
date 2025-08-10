@@ -93,6 +93,63 @@ body {
   }
   
   // ================================================================
+  // JUMBOTRON STYLING
+  // ================================================================
+  
+  /**
+   * Hero jumbotron with random background image
+   * Features overlay for text readability and smooth transitions
+   */
+  .jumbotron {
+    height: 60vh;                                      /* 60% of viewport height */
+    background-size: cover;                            /* Cover entire area */
+    background-position: center;                       /* Center the image */
+    background-repeat: no-repeat;                      /* Don't repeat image */
+    position: relative;                                /* For overlay positioning */
+    display: flex;                                     /* Flexbox for centering */
+    align-items: center;                               /* Center content vertically */
+    margin-bottom: 0;                                  /* Remove default margin */
+    
+    /* Dark overlay for text readability */
+    &::before {
+      content: '';                                     /* Empty pseudo-element */
+      position: absolute;                              /* Position over background */
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);                 /* Semi-transparent black overlay */
+      z-index: 1;                                     /* Above background, below text */
+    }
+    
+    /* Jumbotron content styling */
+    .jumbotron-content {
+      position: relative;                              /* Above overlay */
+      z-index: 2;                                     /* Above overlay */
+      
+      h1 {
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Strong text shadow */
+        font-weight: 800;                             /* Extra bold */
+      }
+      
+      p {
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* Text shadow for readability */
+        font-size: 1.25rem;                           /* Larger lead text */
+      }
+      
+      .btn {
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);   /* Button shadow */
+        transition: all 0.3s ease;                    /* Smooth transitions */
+        
+        &:hover {
+          transform: translateY(-2px);                /* Lift on hover */
+          box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4); /* Enhanced shadow */
+        }
+      }
+    }
+  }
+  
+  // ================================================================
   // MINING POOL CARD STYLING
   // ================================================================
   
