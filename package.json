@@ -1,0 +1,40 @@
+{
+  "name": "ethereum-mining-dashboard",
+  "version": "1.0.0",
+  "description": "Real-time Ethereum mining pool analytics dashboard",
+  "main": "index.js",
+  "scripts": {
+    "setup:dev": "npm install && cd frontend && npm install && cd ../backend && npm install && cd .. && npm run db:setup",
+    "dev": "concurrently \"npm run backend:dev\" \"npm run frontend:dev\"",
+    "backend:dev": "cd backend && npm run dev",
+    "frontend:dev": "cd frontend && npm start",
+    "db:setup": "cd backend && npm run db:migrate",
+    "build": "npm run frontend:build && npm run backend:build",
+    "frontend:build": "cd frontend && npm run build",
+    "backend:build": "cd backend && npm run build",
+    "start": "cd backend && npm start",
+    "test": "npm run frontend:test && npm run backend:test",
+    "frontend:test": "cd frontend && npm test",
+    "backend:test": "cd backend && npm test",
+    "lint": "npm run frontend:lint && npm run backend:lint",
+    "frontend:lint": "cd frontend && npm run lint",
+    "backend:lint": "cd backend && npm run lint"
+  },
+  "keywords": [
+    "ethereum",
+    "mining",
+    "dashboard",
+    "cryptocurrency",
+    "angular",
+    "nodejs"
+  ],
+  "author": "Mining Dashboard Team",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}

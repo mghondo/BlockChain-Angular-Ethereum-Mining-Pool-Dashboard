@@ -1,0 +1,430 @@
+/*
+================================================================
+ETHEREUM MINING POOL DASHBOARD - CUSTOM STYLES
+================================================================
+
+This SCSS file provides comprehensive styling for the mining dashboard
+with a professional mining-themed color palette and modern UI design.
+
+Author: Mining Dashboard Team
+Version: 1.0.0
+*/
+
+// ================================================================
+// MINING-THEMED COLOR PALETTE
+// ================================================================
+
+/**
+ * CSS Custom Properties (CSS Variables) for consistent theming
+ * throughout the dashboard. These colors create a professional
+ * mining industry aesthetic with orange as the primary accent.
+ */
+:root {
+  --mining-orange: #FF6B35;    /* Primary accent color - vibrant orange */
+  --mining-dark: #2C3E50;      /* Dark blue-gray for headers and text */
+  --mining-success: #27AE60;   /* Success green for positive metrics */
+  --mining-warning: #F39C12;   /* Warning yellow for caution states */
+  --mining-danger: #E74C3C;    /* Danger red for negative metrics */
+  --mining-charcoal: #34495E;  /* Darker gray for backgrounds */
+  --mining-light: #ECF0F1;     /* Light gray for subtle backgrounds */
+}
+
+// ================================================================
+// GLOBAL STYLES
+// ================================================================
+
+/**
+ * Base body styling for the entire application
+ * Sets the foundation for typography and background
+ */
+body {
+  background-color: #f8f9fa;  /* Light gray background for clean look */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;  /* Modern font stack */
+}
+
+/**
+ * Main dashboard container with all component styles
+ * Uses BEM-like naming conventions for maintainable CSS
+ */
+.mining-dashboard {
+  min-height: 100vh;  /* Full viewport height for proper layout */
+  
+  // ================================================================
+  // HERO CARD STYLING
+  // ================================================================
+  
+  /**
+   * Hero card - the main dashboard header with network statistics
+   * Features gradient background and dramatic styling for primary metrics
+   */
+  .hero-card {
+    background: linear-gradient(135deg, var(--mining-dark) 0%, var(--mining-charcoal) 100%);
+    color: white;                                    /* White text on dark background */
+    border: none;                                   /* Remove default Bootstrap border */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);   /* Elevated shadow effect */
+    border-radius: 15px;                           /* Rounded corners for modern look */
+    
+    /* Hero card content padding */
+    .card-body {
+      padding: 3rem 2rem;  /* Generous padding for spacious feel */
+    }
+    
+    /* Primary hashrate display styling */
+    .display-3 {
+      font-weight: 700;                                    /* Bold weight for prominence */
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);       /* Subtle text shadow for depth */
+      
+      /* Loading state animation */
+      &.loading {
+        opacity: 0.7;                    /* Slightly transparent during loading */
+        animation: pulse 2s infinite;    /* Pulsing animation to indicate loading */
+      }
+    }
+    
+    /* Secondary statistics styling */
+    .stat-item {
+      padding: 1rem 0;  /* Vertical spacing between stats */
+      
+      h3 {
+        margin-bottom: 0.5rem;  /* Spacing below stat values */
+        font-weight: 600;       /* Semi-bold for stat numbers */
+      }
+    }
+  }
+  
+  // ================================================================
+  // MINING POOL CARD STYLING
+  // ================================================================
+  
+  /**
+   * Individual mining pool cards with hover effects and clean layout
+   * Each card displays comprehensive pool statistics and performance metrics
+   */
+  .pool-card {
+    transition: all 0.3s ease;        /* Smooth animations for all properties */
+    border: 1px solid #dee2e6;        /* Light gray border */
+    border-radius: 10px;              /* Rounded corners for modern look */
+    
+    /* Hover effect for enhanced interactivity */
+    &:hover {
+      transform: translateY(-5px);                        /* Lift card on hover */
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);        /* Enhanced shadow */
+      border-color: var(--mining-orange);                /* Orange border highlight */
+    }
+    
+    /* Pool name styling */
+    .card-title {
+      color: var(--mining-dark);  /* Dark color for readability */
+      font-weight: 600;           /* Semi-bold for emphasis */
+    }
+    
+    /* Statistics rows within each pool card */
+    .pool-stats {
+      .stat-row {
+        display: flex;                              /* Flexbox for label/value alignment */
+        justify-content: space-between;             /* Space between label and value */
+        align-items: center;                        /* Center align vertically */
+        padding: 0.25rem 0;                        /* Vertical padding for spacing */
+        border-bottom: 1px solid #f8f9fa;         /* Subtle separator line */
+        
+        /* Remove border from last row */
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+    }
+    
+    /* Status badges styling */
+    .badge {
+      font-size: 0.75rem;          /* Smaller font for badges */
+      padding: 0.4rem 0.8rem;      /* Comfortable padding */
+    }
+  }
+  
+  // ================================================================
+  // GENERAL CARD STYLING IMPROVEMENTS
+  // ================================================================
+  
+  /**
+   * Enhanced Bootstrap card styling with mining theme integration
+   * Provides consistent card appearance across all dashboard sections
+   */
+  .card {
+    border: none;                                        /* Remove default border */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);        /* Subtle shadow for elevation */
+    border-radius: 10px;                                /* Rounded corners */
+    
+    /* Card header with gradient background */
+    .card-header {
+      background: linear-gradient(90deg, #f8f9fa 0%, #ffffff 100%);  /* Subtle gradient */
+      border-bottom: 1px solid #dee2e6;                              /* Bottom border */
+      border-radius: 10px 10px 0 0 !important;                      /* Top rounded corners only */
+      padding: 1.25rem;                                              /* Generous padding */
+      
+      /* Card title styling in headers */
+      .card-title {
+        font-weight: 600;                /* Semi-bold for prominence */
+        color: var(--mining-dark);       /* Consistent dark color */
+      }
+    }
+    
+    /* Card body padding */
+    .card-body {
+      padding: 1.5rem;  /* Comfortable padding for content */
+    }
+  }
+  
+  // ================================================================
+  // TABLE STYLING
+  // ================================================================
+  
+  /**
+   * Enhanced table styling for recent blocks and data tables
+   * Includes hover effects and improved typography
+   */
+  .table {
+    margin-bottom: 0;  /* Remove default bottom margin */
+    
+    /* Table header styling */
+    thead th {
+      background-color: #f8f9fa;        /* Light gray background */
+      border-top: none;                  /* Remove top border */
+      font-weight: 600;                  /* Semi-bold for headers */
+      color: var(--mining-dark);         /* Dark color for contrast */
+      padding: 1rem 0.75rem;            /* Comfortable padding */
+    }
+    
+    /* Table body rows with hover effects */
+    tbody tr {
+      transition: background-color 0.2s ease;  /* Smooth hover transition */
+      
+      /* Hover effect with mining orange accent */
+      &:hover {
+        background-color: rgba(255, 107, 53, 0.05);  /* Very light orange background */
+      }
+      
+      /* Table cell styling */
+      td {
+        padding: 1rem 0.75rem;    /* Consistent padding with headers */
+        vertical-align: middle;     /* Center align content vertically */
+      }
+    }
+  }
+  
+  // ================================================================
+  // NAVBAR CUSTOMIZATIONS
+  // ================================================================
+  
+  /**
+   * Navigation bar styling with enhanced branding and shadows
+   */
+  .navbar {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);  /* Subtle shadow for depth */
+    
+    /* Brand logo and title styling */
+    .navbar-brand {
+      font-weight: 700;    /* Bold weight for brand prominence */
+      font-size: 1.5rem;   /* Larger font size for brand */
+      
+      /* Icon styling within brand */
+      i {
+        font-size: 1.8rem;  /* Larger icon for visual impact */
+      }
+    }
+  }
+  
+  // ================================================================
+  // FOOTER STYLING
+  // ================================================================
+  
+  /**
+   * Footer styling with shadow and proper spacing
+   */
+  footer {
+    margin-top: auto;                                /* Push footer to bottom */
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);    /* Top shadow for separation */
+  }
+  
+  // ================================================================
+  // LOADING ANIMATIONS
+  // ================================================================
+  
+  /**
+   * Pulse animation for loading states
+   * Creates a subtle breathing effect to indicate data loading
+   */
+  @keyframes pulse {
+    0% {
+      opacity: 0.7;  /* Start with reduced opacity */
+    }
+    50% {
+      opacity: 1;    /* Full opacity at middle */
+    }
+    100% {
+      opacity: 0.7;  /* Back to reduced opacity */
+    }
+  }
+  
+  /**
+   * Loading spinner sizing
+   */
+  .spinner-border {
+    width: 3rem;   /* Larger spinner for better visibility */
+    height: 3rem;
+  }
+  
+  // ================================================================
+  // RESPONSIVE DESIGN IMPROVEMENTS
+  // ================================================================
+  
+  /**
+   * Mobile-responsive adjustments for tablets and phones
+   * Ensures optimal viewing experience across all device sizes
+   */
+  @media (max-width: 768px) {
+    /* Reduce hero card padding on mobile */
+    .hero-card .card-body {
+      padding: 2rem 1rem;  /* Less padding for smaller screens */
+    }
+    
+    /* Smaller display fonts on mobile */
+    .display-3 {
+      font-size: 2.5rem;  /* Reduce from default 4.5rem */
+    }
+    
+    .display-4 {
+      font-size: 2rem;    /* Reduce from default 3.5rem */
+    }
+    
+    /* Ensure pool cards have proper spacing on mobile */
+    .pool-card {
+      margin-bottom: 1rem;  /* Consistent spacing between cards */
+    }
+    
+    /* Smaller table text on mobile */
+    .table-responsive {
+      font-size: 0.9rem;   /* Slightly smaller text for better fit */
+    }
+  }
+  
+  // ================================================================
+  // CUSTOM UTILITY CLASSES
+  // ================================================================
+  
+  /**
+   * Custom color utility classes for mining theme integration
+   * Provides consistent theming throughout the dashboard
+   */
+  .text-mining-orange {
+    color: var(--mining-orange) !important;  /* Orange text color */
+  }
+  
+  .bg-mining-orange {
+    background-color: var(--mining-orange) !important;  /* Orange background */
+  }
+  
+  .border-mining-orange {
+    border-color: var(--mining-orange) !important;      /* Orange border */
+  }
+  
+  // ================================================================
+  // STATUS INDICATOR CLASSES
+  // ================================================================
+  
+  /**
+   * Status indicator classes for system health and performance
+   * Uses semantic colors to convey status information
+   */
+  .status-online {
+    color: var(--mining-success);  /* Green for online/healthy status */
+  }
+  
+  .status-warning {
+    color: var(--mining-warning);  /* Yellow for warning status */
+  }
+  
+  .status-offline {
+    color: var(--mining-danger);   /* Red for offline/error status */
+  }
+  
+  // ================================================================
+  // CODE ELEMENT STYLING
+  // ================================================================
+  
+  /**
+   * Enhanced styling for code elements (block numbers, addresses, etc.)
+   * Creates a distinctive appearance for technical data
+   */
+  code {
+    background-color: rgba(255, 107, 53, 0.1);  /* Light orange background */
+    color: var(--mining-orange);                 /* Orange text color */
+    padding: 0.2rem 0.4rem;                     /* Comfortable padding */
+    border-radius: 0.25rem;                     /* Rounded corners */
+    font-weight: 600;                           /* Semi-bold for emphasis */
+  }
+}
+
+/*
+================================================================
+STYLESHEET SUMMARY
+================================================================
+
+This SCSS file provides comprehensive styling for the Ethereum Mining
+Pool Dashboard with a professional, modern design system.
+
+KEY FEATURES:
+
+1. MINING-THEMED COLOR PALETTE
+   - CSS custom properties for consistent theming
+   - Orange (#FF6B35) as primary accent color
+   - Professional dark blue-gray color scheme
+   - Semantic colors for success, warning, and danger states
+
+2. HERO DASHBOARD STYLING
+   - Gradient background with dramatic visual impact
+   - Large typography for primary metrics
+   - Subtle text shadows and animations
+   - Loading state animations with pulse effects
+
+3. MINING POOL CARD DESIGN
+   - Interactive hover effects with elevation
+   - Clean statistical data presentation
+   - Flexible layout with proper spacing
+   - Status badges and performance indicators
+
+4. PROFESSIONAL TABLE DESIGN
+   - Enhanced Bootstrap table styling
+   - Hover effects with mining theme colors
+   - Optimal padding and typography
+   - Responsive design considerations
+
+5. RESPONSIVE DESIGN SYSTEM
+   - Mobile-first approach with breakpoints
+   - Flexible layouts for all screen sizes
+   - Optimized typography scaling
+   - Touch-friendly interface elements
+
+6. CONSISTENT COMPONENT STYLING
+   - Unified card design language
+   - Consistent shadows and border radius
+   - Professional gradients and effects
+   - Accessible color contrast ratios
+
+7. UTILITY CLASSES
+   - Custom mining-themed color classes
+   - Status indicator system
+   - Enhanced code element styling
+   - Flexible spacing and layout utilities
+
+DESIGN PRINCIPLES:
+- Professional cryptocurrency/mining industry aesthetic
+- Bloomberg Terminal inspired data visualization
+- Modern flat design with subtle depth
+- Consistent spacing and typography scale
+- Accessibility-focused color choices
+- Performance-optimized animations
+
+This stylesheet creates a cohesive, professional mining dashboard
+interface that effectively communicates complex real-time data while
+maintaining excellent user experience across all devices.
+*/
