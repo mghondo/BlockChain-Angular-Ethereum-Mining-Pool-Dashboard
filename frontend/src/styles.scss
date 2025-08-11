@@ -1,1 +1,34 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* API status indicator circle */
+.live-indicator {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+/* Online status - green with flicker animation (restore original behavior) */
+.live-indicator.online {
+  background-color: #198754;
+  animation: flicker-animation 0.1s infinite;
+}
+
+/* Offline status - solid red, no animation */
+.live-indicator.offline {
+  background-color: #dc3545;
+  animation: none;
+}
+
+@keyframes flicker-animation {
+  0% { 
+    background-color: #198754;
+  }
+  50% { 
+    background-color: #3dcc8a;
+  }
+  100% { 
+    background-color: #198754;
+  }
+}

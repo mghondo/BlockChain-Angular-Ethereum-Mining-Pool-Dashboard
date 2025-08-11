@@ -1,0 +1,87 @@
+<!-- ================================================================ -->
+<!-- MINING POOLS GRID SECTION -->
+<!-- Individual pool cards with detailed statistics and performance -->
+<!-- ================================================================ -->
+
+<div class="row mb-4">
+  <div class="col-12">
+    <div class="card">
+      
+      <!-- Section header -->
+      <div class="card-header">
+        <h4 class="card-title mb-0">
+          <i class="fas fa-swimming-pool text-info me-2"></i>
+          Mining Pools Overview
+        </h4>
+      </div>
+      
+      <div class="card-body">
+        
+        <!-- Pool cards grid - displays when data is loaded -->
+        <div class="row" *ngIf="pools.length > 0">
+          <div class="col-lg-3 col-md-6 mb-3" *ngFor="let pool of pools">
+            
+            <!-- Individual pool card -->
+            <div class="card pool-card h-100">
+              <div class="card-body">
+                
+                <!-- Pool header: name and status -->
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                  <h5 class="card-title">{{ pool.name }}</h5>
+                  <span class="badge bg-success">{{ pool.status }}</span>
+                </div>
+                
+                <!-- Pool statistics list -->
+                <div class="pool-stats">
+                  
+                  <!-- Current hashrate with formatting -->
+                  <div class="stat-row">
+                    <span class="text-muted">Hashrate:</span>
+                    <span class="fw-bold">{{ formatHashrate(pool.hashrate) }}</span>
+                  </div>
+                  
+                  <!-- Active miners count -->
+                  <div class="stat-row">
+                    <span class="text-muted">Miners:</span>
+                    <span class="fw-bold">{{ formatNumber(pool.miners_count) }}</span>
+                  </div>
+                  
+                  <!-- Pool fee percentage -->
+                  <div class="stat-row">
+                    <span class="text-muted">Fee:</span>
+                    <span class="fw-bold">{{ pool.fee_percentage }}%</span>
+                  </div>
+                  
+                  <!-- 7-day luck with color coding -->
+                  <div class="stat-row">
+                    <span class="text-muted">Luck (7d):</span>
+                    <span class="fw-bold" [class]="getLuckClass(pool.luck_7d)">
+                      {{ pool.luck_7d.toFixed(1) }}%
+                    </span>
+                  </div>
+                  
+                  <!-- Payout method (PPLNS, PPS, etc.) -->
+                  <div class="stat-row">
+                    <span class="text-muted">Method:</span>
+                    <span class="fw-bold">{{ pool.payout_method }}</span>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+        
+        <!-- Loading state display -->
+        <div *ngIf="pools.length === 0" class="text-center py-4">
+          <div class="spinner-border text-warning" role="status" *ngIf="isLoading">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p class="text-muted mt-2">Loading mining pools data...</p>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>

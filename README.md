@@ -19,24 +19,27 @@
 
 ## 🌟 Features
 
-### Real-Time Mining Analytics
-- **Live Hashrate Monitoring** - Dynamic hashrate tracking with ±5% realistic variations
-- **Pool Performance Metrics** - Comprehensive statistics for major mining pools
-- **Network Statistics** - Total network hashrate, difficulty, and miner counts
-- **Block Discovery Tracking** - Real-time block finds with rewards and timestamps
+### 🌐 Real-Time API Data Integration
+- **Live Bitcoin Mining Pools** - Real hashrates from Foundry USA, AntPool, ViaBTC, F2Pool via mempool.space
+- **Current ETH Prices** - Live market prices from CoinGecko API ($4,000+ range)
+- **Gas Price Tracking** - Real-time Ethereum gas prices from Etherscan API
+- **Recent Bitcoin Blocks** - Actual mined blocks with real rewards and pool attribution
+- **API Status Monitoring** - Visual indicator showing live connection status
 
-### Professional Dashboard Interface
-- **Hero Dashboard** - Bloomberg-style primary metrics display
-- **Interactive Pool Cards** - Detailed statistics with hover effects
-- **Responsive Tables** - Recent blocks with sortable data
+### Professional Dashboard Interface  
+- **Hero Dashboard** - Bloomberg-style metrics with real-time data
+- **API Status Indicator** - Green flickering = live data, Red solid = offline
+- **Interactive Pool Cards** - Real mining statistics with live updates
+- **Responsive Tables** - Recent Bitcoin blocks with actual rewards
 - **Mining-Themed Design** - Custom orange (#FF6B35) color scheme
-- **Real-Time Updates** - Automatic data refresh every 30 seconds
+- **30-Second Updates** - Intelligent caching to respect API rate limits
 
-### Mining Pool Integration
-- **Ethermine** - World's largest Ethereum mining pool
-- **F2Pool** - Major Asian mining pool with global reach
-- **Flexpool** - Community-focused mining pool
-- **2miners** - Popular multi-cryptocurrency pool
+### Live Data Sources
+- **🟡 Bitcoin Mining Pools** - Real-time data from mempool.space (no API key required)
+  - Foundry USA, AntPool, ViaBTC, F2Pool
+  - Live hashrates, block counts, estimated miners
+- **💰 CoinGecko API** - Live cryptocurrency prices (requires free API key)
+- **⛽ Etherscan API** - Real-time gas prices and network data (requires free API key)
 
 ### Technical Excellence
 - **Angular 18+** - Modern framework with standalone components
@@ -55,6 +58,51 @@ Ensure you have the following installed:
 - **npm** (comes with Node.js)
 - **Git** for version control
 - **Modern web browser** (Chrome, Firefox, Safari, Edge)
+
+### 🔑 API Keys Required
+
+This dashboard uses **real-time API data** from multiple sources. You'll need the following API keys:
+
+#### Required API Keys:
+- **🌐 CoinGecko API** - For real-time ETH/USD prices
+  - Get free key at: https://www.coingecko.com/en/api
+  - Rate limit: 30 calls/minute (free tier)
+
+- **⛽ Etherscan API** - For Ethereum network gas prices
+  - Get free key at: https://etherscan.io/apis
+  - Rate limit: 5 calls/second (free tier)
+
+#### Optional API Keys:
+- **🔗 Infura Project ID** - For additional blockchain data
+  - Get free key at: https://infura.io
+  
+- **⚡ Alchemy API Key** - Alternative blockchain provider
+  - Get free key at: https://alchemy.com
+
+#### Setting Up API Keys:
+
+1. **Copy the environment template:**
+   ```bash
+   cp backend/.env.example backend/.env
+   ```
+
+2. **Edit `backend/.env` with your API keys:**
+   ```bash
+   # Required for real-time data
+   ETHERSCAN_API_KEY=your_etherscan_api_key_here
+   COINGECKO_API_KEY=your_coingecko_api_key_here
+   
+   # Optional - for extended functionality
+   INFURA_PROJECT_ID=your_infura_project_id_here
+   ALCHEMY_API_KEY=your_alchemy_api_key_here
+   
+   # Development settings
+   NODE_ENV=development
+   ```
+
+3. **The dashboard will automatically use your API keys for real data!**
+
+> **Note:** The dashboard works with free API tiers. All external APIs include intelligent caching (30-second intervals) to stay within rate limits.
 
 ### 🚀 One-Command Startup
 
@@ -84,6 +132,36 @@ Once the servers are running:
 - **Backend API**: http://localhost:3000
 - **Health Check**: http://localhost:3000/health
 - **Pool Data**: http://localhost:3000/api/pools
+
+### 🚦 API Status Indicator
+
+The dashboard includes a **real-time API status indicator** in the top-right corner that shows whether you're getting live data:
+
+#### 🟢 Online Status (Green Flickering Circle):
+- **Visual**: Bright green circle that flickers between two shades of green
+- **Text**: Shows "Live Data"
+- **Meaning**: 
+  - ✅ Backend API is responding
+  - ✅ Real Bitcoin mining pool data from mempool.space
+  - ✅ Live ETH prices from CoinGecko ($4,000+ range)
+  - ✅ Current gas prices from Etherscan (1-20 gwei)
+  - ✅ Fresh blockchain data every 30 seconds
+
+#### 🔴 Offline Status (Solid Red Circle):
+- **Visual**: Solid red circle with no animation
+- **Text**: Shows "Offline"
+- **Meaning**:
+  - ❌ Backend API is down or unreachable
+  - ❌ No real-time data updates
+  - ❌ API calls failing or timing out
+
+#### How It Works:
+- **Health checks every 5 seconds** automatically
+- **3-second timeout** per API call for fast failure detection
+- **Automatic recovery** when backend comes back online
+- **No fallback data** - ensures you only see real information
+
+> **💡 Pro Tip:** If you see the red "Offline" indicator, check that your backend server is running with `node simple-start.js` and that your API keys are correctly configured in `backend/.env`.
 
 ### Manual Setup (Advanced)
 
@@ -535,22 +613,25 @@ copies or substantial portions of the Software.
 ### ✅ Completed Features
 - ✅ Complete Angular 18+ frontend with TypeScript
 - ✅ Node.js + Express backend API
-- ✅ Real-time data simulation with realistic variations
+- ✅ **Real Bitcoin mining pool API integration** (mempool.space)
+- ✅ **Live cryptocurrency prices** (CoinGecko API)
+- ✅ **Real-time gas prices** (Etherscan API)
+- ✅ **API status monitoring system** with visual indicators
 - ✅ Professional mining-themed UI/UX design
 - ✅ Responsive Bootstrap 5 integration
-- ✅ Dynamic block generation and pool statistics
-- ✅ Comprehensive documentation and comments
+- ✅ Real blockchain data with 30-second intelligent caching
+- ✅ Comprehensive documentation and API key setup
 - ✅ One-command startup script
-- ✅ Production-ready architecture
+- ✅ Production-ready architecture with error handling
 
 ### 🚧 Future Enhancements
-- 🔄 Real mining pool API integration
 - 📊 Historical data charts and analytics
-- 🔔 Email alert system
-- 👤 User accounts and preferences
+- 🔔 Email alert system for mining metrics
+- 👤 User accounts and personalized dashboards
 - 📱 Mobile app (React Native)
 - 🌐 Multi-language support
-- 📈 Advanced analytics and reporting
+- 📈 Advanced analytics and mining profitability calculator
+- ⚡ WebSocket real-time streaming (sub-second updates)
 
 ---
 

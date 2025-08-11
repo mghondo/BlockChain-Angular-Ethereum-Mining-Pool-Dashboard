@@ -18,6 +18,13 @@
 
 const express = require('express');
 const cors = require('cors');
+require('dotenv').config();
+
+// Import the external API service
+const { ExternalAPIService } = require('./backend/src/services/ExternalAPIService.js');
+
+// Initialize the API service
+const apiService = new ExternalAPIService();
 
 const app = express();
 const port = 3000;
@@ -255,16 +262,26 @@ app.get('/health', (req, res) => {
 
 /**
  * Get All Mining Pools
- * Returns current statistics for all active mining pools with dynamic data
+ * Returns current statistics for all active mining pools with real API data
  * Data includes hashrate, miner counts, luck percentages, and fees
  */
-app.get('/api/pools', (req, res) => {
-  const dynamicPools = generateDynamicPools();
-  res.json({
-    success: true,
-    data: dynamicPools,                    // Array of pool objects with current stats
-    timestamp: new Date().toISOString()    // When this data was generated
-  });
+app.get('/api/pools', async (req, res) => {
+  try {
+    const pools = await apiService.getAllPoolsData();
+    res.json({
+      success: true,
+      data: pools,                           // Array of pool objects with real stats
+      timestamp: new Date().toISOString()    // When this data was generated
+    });
+  } catch (error) {
+    console.error('❌ Error fetching pools data:', error.message);
+    res.status(503).json({
+      success: false,
+      error: 'Failed to fetch real mining pool data',
+      message: 'External API services are unavailable',
+      timestamp: new Date().toISOString()
+    });
+  }
 });
 
 /**
@@ -272,93 +289,179 @@ app.get('/api/pools', (req, res) => {
  * Returns detailed information for a single mining pool by ID
  * Used for pool-specific dashboard views and detailed analysis
  */
-app.get('/api/pools/:id', (req, res) => {
-  const dynamicPools = generateDynamicPools();
-  const pool = dynamicPools.find(p => p.id === req.params.id);
-  
-  if (!pool) {
-    return res.status(404).json({
+app.get('/api/pools/:id', async (req, res) => {
+  try {
+    const pools = await apiService.getAllPoolsData();
+    const pool = pools.find(p => p.id === req.params.id);
+    
+    if (!pool) {
+      return res.status(404).json({
+        success: false,
+        error: 'Pool not found',
+        timestamp: new Date().toISOString()
+      });
+    }
+    
+    res.json({
+      success: true,
+      data: pool,                           // Single pool object with real stats
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('Error fetching pool details:', error);
+    // Fallback to mock data if API fails
+    const dynamicPools = generateDynamicPools();
+    const pool = dynamicPools.find(p => p.id === req.params.id);
+    
+    if (!pool) {
+      return res.status(404).json({
+        success: false,
+        error: 'Pool not found',
+        timestamp: new Date().toISOString()
+      });
+    }
+    
+    res.json({
+      success: true,
+      data: pool,
+      timestamp: new Date().toISOString(),
+      source: 'fallback'
+    });
+  }
+});
+
+app.get('/api/pools/compare', async (req, res) => {
+  try {
+    const pools = await apiService.getAllPoolsData();
+    const poolIds = req.query.pools ? req.query.pools.split(',') : [];
+    const filteredPools = pools.filter(p => poolIds.includes(p.id));
+    
+    const comparisonData = filteredPools.map(pool => ({
+      ...pool,
+      recommendation_score: calculateRecommendationScore(pool)
+    }));
+    
+    res.json({
+      success: true,
+      data: comparisonData,
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('Error fetching pool comparison data:', error);
+    // Fallback to mock data if API fails
+    const dynamicPools = generateDynamicPools();
+    const poolIds = req.query.pools ? req.query.pools.split(',') : [];
+    const filteredPools = dynamicPools.filter(p => poolIds.includes(p.id));
+    
+    const comparisonData = filteredPools.map(pool => ({
+      ...pool,
+      recommendation_score: calculateRecommendationScore(pool)
+    }));
+    
+    res.json({
+      success: true,
+      data: comparisonData,
+      timestamp: new Date().toISOString(),
+      source: 'fallback'
+    });
+  }
+});
+
+app.get('/api/stats/dashboard', async (req, res) => {
+  try {
+    const stats = await apiService.getDashboardStats();
+    res.json({
+      success: true,
+      data: {
+        ...stats,
+        data_sources: {
+          eth_price: 'CoinGecko API',
+          gas_price: 'Etherscan API',
+          mining_pools: 'Bitcoin Mining Pools (mempool.space)',
+          recent_blocks: 'Bitcoin Blockchain (mempool.space)',
+          cache_status: '30s cache active'
+        }
+      },
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('❌ Error fetching dashboard stats:', error.message);
+    res.status(503).json({
       success: false,
-      error: 'Pool not found',
+      error: 'Failed to fetch real dashboard statistics',
+      message: 'External API services are unavailable',
       timestamp: new Date().toISOString()
     });
   }
-  
-  res.json({
-    success: true,
-    data: pool,                           // Single pool object with current stats
-    timestamp: new Date().toISOString()
-  });
 });
 
-app.get('/api/pools/compare', (req, res) => {
-  const dynamicPools = generateDynamicPools();
-  const poolIds = req.query.pools ? req.query.pools.split(',') : [];
-  const filteredPools = dynamicPools.filter(p => poolIds.includes(p.id));
-  
-  const comparisonData = filteredPools.map(pool => ({
-    ...pool,
-    recommendation_score: calculateRecommendationScore(pool)
-  }));
-  
-  res.json({
-    success: true,
-    data: comparisonData,
-    timestamp: new Date().toISOString()
-  });
-});
-
-app.get('/api/stats/dashboard', (req, res) => {
-  const dynamicPools = generateDynamicPools();
-  const totalHashrate = dynamicPools.reduce((sum, pool) => sum + pool.hashrate, 0);
-  const totalMiners = dynamicPools.reduce((sum, pool) => sum + pool.miners_count, 0);
-  
-  res.json({
-    success: true,
-    data: {
-      total_hashrate: totalHashrate,
-      total_miners: totalMiners,
-      active_pools: dynamicPools.length,
-      blocks_found_24h: dynamicBlocks.length,
-      recent_blocks: dynamicBlocks,
-      network_difficulty: 15500000000000000,
-      last_updated: new Date().toISOString()
-    },
-    timestamp: new Date().toISOString()
-  });
-});
-
-app.get('/api/pools/:id/history', (req, res) => {
+app.get('/api/pools/:id/history', async (req, res) => {
   const { id } = req.params;
-  const dynamicPools = generateDynamicPools();
-  const pool = dynamicPools.find(p => p.id === id);
   
-  if (!pool) {
-    return res.status(404).json({
-      success: false,
-      error: 'Pool not found',
+  try {
+    const pools = await apiService.getAllPoolsData();
+    const pool = pools.find(p => p.id === id);
+    
+    if (!pool) {
+      return res.status(404).json({
+        success: false,
+        error: 'Pool not found',
+        timestamp: new Date().toISOString()
+      });
+    }
+    
+    // Generate historical data based on current pool state (APIs don't provide historical data easily)
+    const history = [];
+    for (let i = 0; i < 24; i++) {
+      const timeVariation = i * 0.02; // Gradual change over time
+      history.push({
+        timestamp: new Date(Date.now() - i * 60 * 60 * 1000),
+        hashrate: pool.hashrate + (Math.random() - 0.5 + timeVariation) * pool.hashrate * 0.08,
+        miners_count: pool.miners_count + Math.floor((Math.random() - 0.5 + timeVariation) * 800),
+        luck_7d: pool.luck_7d + (Math.random() - 0.5 + timeVariation) * 8,
+        blocks_found_24h: Math.floor(Math.random() * 4)
+      });
+    }
+    
+    res.json({
+      success: true,
+      data: history.reverse(),
       timestamp: new Date().toISOString()
     });
-  }
-  
-  // Generate dynamic historical data based on current pool state
-  const history = [];
-  for (let i = 0; i < 24; i++) {
-    const timeVariation = i * 0.02; // Gradual change over time
-    history.push({
-      timestamp: new Date(Date.now() - i * 60 * 60 * 1000),
-      hashrate: pool.hashrate + (Math.random() - 0.5 + timeVariation) * pool.hashrate * 0.08,
-      miners_count: pool.miners_count + Math.floor((Math.random() - 0.5 + timeVariation) * 800),
-      luck_7d: pool.luck_7d + (Math.random() - 0.5 + timeVariation) * 8,
-      blocks_found_24h: Math.floor(Math.random() * 4)
+  } catch (error) {
+    console.error('Error fetching pool history:', error);
+    // Fallback to mock data if API fails
+    const dynamicPools = generateDynamicPools();
+    const pool = dynamicPools.find(p => p.id === id);
+    
+    if (!pool) {
+      return res.status(404).json({
+        success: false,
+        error: 'Pool not found',
+        timestamp: new Date().toISOString()
+      });
+    }
+    
+    // Generate dynamic historical data based on current pool state
+    const history = [];
+    for (let i = 0; i < 24; i++) {
+      const timeVariation = i * 0.02; // Gradual change over time
+      history.push({
+        timestamp: new Date(Date.now() - i * 60 * 60 * 1000),
+        hashrate: pool.hashrate + (Math.random() - 0.5 + timeVariation) * pool.hashrate * 0.08,
+        miners_count: pool.miners_count + Math.floor((Math.random() - 0.5 + timeVariation) * 800),
+        luck_7d: pool.luck_7d + (Math.random() - 0.5 + timeVariation) * 8,
+        blocks_found_24h: Math.floor(Math.random() * 4)
+      });
+    }
+    
+    res.json({
+      success: true,
+      data: history.reverse(),
+      timestamp: new Date().toISOString(),
+      source: 'fallback'
     });
   }
-  
-  res.json({
-    success: true,
-    data: history.reverse(),
-    timestamp: new Date().toISOString()
-  });
 });
 
 // Alert endpoints

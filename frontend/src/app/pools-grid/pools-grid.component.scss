@@ -1,0 +1,99 @@
+// ================================================================
+// CSS CUSTOM PROPERTIES (VARIABLES)
+// ================================================================
+
+:host {
+  --mining-orange: #FF6B35;        /* Primary accent color */
+  --mining-dark: #1a1d29;          /* Primary dark background */
+  --mining-charcoal: #2d3748;      /* Secondary dark background */
+  --mining-success: #10b981;       /* Success green */
+  --mining-warning: #f59e0b;       /* Warning amber */
+  --mining-danger: #ef4444;        /* Danger red */
+  --mining-info: #3b82f6;          /* Info blue */
+}
+
+// ================================================================
+// MINING POOL CARDS STYLING
+// ================================================================
+
+/**
+ * Individual mining pool cards with hover effects and clean layout
+ * Each card displays comprehensive pool statistics and performance metrics
+ */
+.pool-card {
+  transition: all 0.3s ease;        /* Smooth animations for all properties */
+  border: 1px solid #dee2e6;        /* Light gray border */
+  border-radius: 10px;              /* Rounded corners for modern look */
+  
+  /* Hover effect for enhanced interactivity */
+  &:hover {
+    transform: translateY(-5px);                        /* Lift card on hover */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);        /* Enhanced shadow */
+    border-color: var(--mining-orange);                /* Orange border highlight */
+  }
+  
+  /* Pool name styling */
+  .card-title {
+    color: var(--mining-dark);  /* Dark color for readability */
+    font-weight: 600;           /* Semi-bold for emphasis */
+  }
+  
+  /* Statistics rows within each pool card */
+  .pool-stats {
+    .stat-row {
+      display: flex;                              /* Flexbox for label/value alignment */
+      justify-content: space-between;             /* Space between label and value */
+      align-items: center;                        /* Center align vertically */
+      padding: 0.25rem 0;                        /* Vertical padding for spacing */
+      border-bottom: 1px solid #f8f9fa;         /* Subtle separator line */
+      
+      /* Remove border from last row */
+      &:last-child {
+        border-bottom: none;
+      }
+      
+      /* Style muted labels */
+      .text-muted {
+        font-size: 0.9rem;          /* Slightly smaller text for labels */
+        color: #6c757d !important;  /* Bootstrap muted color */
+      }
+      
+      /* Bold values styling */
+      .fw-bold {
+        font-weight: 600;            /* Semi-bold for values */
+        color: var(--mining-dark);   /* Dark color for readability */
+      }
+    }
+  }
+}
+
+/**
+ * Luck indicator color classes
+ * Colors are applied based on pool performance relative to expected values
+ */
+.text-success {
+  color: var(--mining-success) !important;
+}
+
+.text-warning {
+  color: var(--mining-warning) !important;
+}
+
+.text-danger {
+  color: var(--mining-danger) !important;
+}
+
+.text-info {
+  color: var(--mining-info) !important;
+}
+
+/**
+ * Mobile-responsive adjustments for tablets and phones
+ * Ensures optimal viewing experience across all device sizes
+ */
+@media (max-width: 768px) {
+  /* Ensure pool cards have proper spacing on mobile */
+  .pool-card {
+    margin-bottom: 1rem;  /* Consistent spacing between cards */
+  }
+}

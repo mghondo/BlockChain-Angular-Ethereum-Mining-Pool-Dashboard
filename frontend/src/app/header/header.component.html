@@ -1,0 +1,22 @@
+<!-- ================================================================ -->
+<!-- NAVIGATION HEADER -->
+<!-- Professional header with branding and live data indicator -->
+<!-- ================================================================ -->
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <!-- Brand logo and title -->
+    <a class="navbar-brand" href="#">
+      <i class="fas fa-cube text-warning me-2"></i>
+      <strong>Ethereum Mining Dashboard</strong>
+    </a>
+    
+    <!-- API status indicator -->
+    <div class="navbar-nav ms-auto">
+      <span class="nav-item nav-link text-light">
+        <div [class]="statusClass" [title]="'Last checked: ' + (apiStatus.lastChecked | date:'medium')"></div>
+        {{ statusText }}
+      </span>
+    </div>
+  </div>
+</nav>

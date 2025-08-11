@@ -1,0 +1,72 @@
+<!-- ================================================================ -->
+<!-- RECENT BLOCKS TABLE SECTION -->
+<!-- Table showing latest blocks found by mining pools -->
+<!-- ================================================================ -->
+
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      
+      <!-- Section header -->
+      <div class="card-header">
+        <h4 class="card-title mb-0">
+          <i class="fas fa-cubes text-success me-2"></i>
+          Recent Blocks Found
+        </h4>
+      </div>
+      
+      <div class="card-body">
+        
+        <!-- Blocks table - displays when blocks are available -->
+        <div class="table-responsive" *ngIf="dashboardData && dashboardData.recent_blocks && dashboardData.recent_blocks.length > 0">
+          <table class="table table-hover">
+            
+            <!-- Table headers -->
+            <thead>
+              <tr>
+                <th>Block #</th>        <!-- Ethereum block number -->
+                <th>Pool</th>           <!-- Which pool found it -->
+                <th>Reward (ETH)</th>   <!-- Block reward amount -->
+                <th>Time</th>           <!-- When it was found -->
+              </tr>
+            </thead>
+            
+            <!-- Table rows with block data -->
+            <tbody>
+              <tr *ngFor="let block of dashboardData.recent_blocks">
+                
+                <!-- Block number with code styling -->
+                <td>
+                  <code class="text-primary">#{{ block.block_number }}</code>
+                </td>
+                
+                <!-- Pool name that found the block -->
+                <td>
+                  <span class="fw-bold">{{ block.pool_name }}</span>
+                </td>
+                
+                <!-- Block reward in ETH with success styling -->
+                <td>
+                  <span class="text-success fw-bold">{{ block.reward }} ETH</span>
+                </td>
+                
+                <!-- Human-readable time ago -->
+                <td class="text-muted">
+                  {{ getTimeAgo(block.timestamp) }}
+                </td>
+                
+              </tr>
+            </tbody>
+            
+          </table>
+        </div>
+        
+        <!-- Empty state when no blocks are available -->
+        <div *ngIf="!dashboardData || !dashboardData.recent_blocks || dashboardData.recent_blocks.length === 0" class="text-center py-4">
+          <p class="text-muted">No recent blocks found</p>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>

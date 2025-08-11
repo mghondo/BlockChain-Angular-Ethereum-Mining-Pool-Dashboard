@@ -1,0 +1,28 @@
+<!-- ================================================================ -->
+<!-- FOOTER SECTION -->
+<!-- Branding and last updated timestamp -->
+<!-- ================================================================ -->
+
+<footer class="bg-dark text-light py-4 mt-5">
+  <div class="container">
+    <div class="row">
+      
+      <!-- Left side: Branding -->
+      <div class="col-md-6">
+        <p class="mb-0">
+          <i class="fas fa-cube text-warning me-2"></i>
+          Ethereum Mining Pool Dashboard
+        </p>
+        <small class="text-muted">Real-time mining pool analytics</small>
+      </div>
+      
+      <!-- Right side: Last updated timestamp -->
+      <div class="col-md-6 text-end">
+        <small class="text-muted">
+          Last updated: {{ dashboardData?.last_updated | date:'medium' }}
+        </small>
+      </div>
+      
+    </div>
+  </div>
+</footer>

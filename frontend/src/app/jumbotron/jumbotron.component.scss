@@ -1,0 +1,52 @@
+/**
+ * Hero jumbotron with random background image
+ * Features overlay for text readability and smooth transitions
+ */
+.jumbotron {
+  height: 64vh;                                      /* 64% of viewport height - 80% of 80vh */
+  background-size: cover;                            /* Cover entire area */
+  background-position: center;                       /* Center the image */
+  background-repeat: no-repeat;                      /* Don't repeat image */
+  position: relative;                                /* For overlay positioning */
+  display: flex;                                     /* Flexbox for centering */
+  align-items: center;                               /* Center content vertically */
+  margin-bottom: 0;                                  /* Remove default margin */
+  
+  /* Dark overlay for text readability */
+  &::before {
+    content: '';                                     /* Empty content for overlay */
+    position: absolute;                              /* Positioned overlay */
+    top: 0;                                         /* Cover full height */
+    left: 0;                                        /* Cover full width */
+    right: 0;                                       /* Cover full width */
+    bottom: 0;                                      /* Cover full height */
+    background: rgba(0, 0, 0, 0.5);                 /* Semi-transparent black overlay */
+    z-index: 1;                                     /* Above background, below text */
+  }
+  
+  /* Jumbotron content styling */
+  .jumbotron-content {
+    position: relative;                              /* Above overlay */
+    z-index: 2;                                     /* Above overlay */
+    
+    h1 {
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Strong text shadow */
+      font-weight: 800;                             /* Extra bold */
+    }
+    
+    p {
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* Text shadow for readability */
+    }
+    
+    .btn {
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Subtle button text shadow */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);    /* Button depth shadow */
+      transition: transform 0.2s ease;              /* Smooth hover effect */
+      
+      &:hover {
+        transform: translateY(-2px);                 /* Lift effect on hover */
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+      }
+    }
+  }
+}

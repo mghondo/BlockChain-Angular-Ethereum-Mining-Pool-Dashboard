@@ -1,0 +1,35 @@
+// ================================================================
+// FOOTER COMPONENT STYLES
+// ================================================================
+
+/**
+ * Footer styling with mining theme consistency
+ * Dark background with professional branding
+ */
+footer {
+  border-top: 3px solid #FF6B35;  /* Orange accent border */
+  
+  /* Footer text styling */
+  p {
+    font-weight: 500;
+    color: #fff;
+  }
+  
+  /* Icon styling */
+  .fas.fa-cube {
+    font-size: 1.1rem;
+  }
+  
+  /* Muted text styling */
+  .text-muted {
+    opacity: 0.7;
+  }
+  
+  /* Responsive text alignment */
+  @media (max-width: 768px) {
+    .text-end {
+      text-align: center !important;
+      margin-top: 1rem;
+    }
+  }
+}

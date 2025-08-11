@@ -1,0 +1,62 @@
+<!-- ================================================================ -->
+<!-- HERO DASHBOARD SECTION -->
+<!-- Main dashboard with total network statistics and key metrics -->
+<!-- ================================================================ -->
+
+<div class="row mb-4">
+  <div class="col-12">
+    <!-- Hero card with primary network statistics -->
+    <div class="card hero-card">
+      <div class="card-body text-center">
+        
+        <!-- Primary metric: Total Network Hashrate -->
+        <h1 class="display-4 text-warning mb-3">
+          <i class="fas fa-tachometer-alt me-2"></i>
+          Total Network Hashrate
+        </h1>
+        
+        <!-- Dynamic hashrate display with loading state -->
+        <h2 class="display-3 mb-3" [class.loading]="isLoading">
+          {{ formatHashrate(dashboardData?.total_hashrate || 0) }}
+        </h2>
+        
+        <!-- Secondary statistics row -->
+        <div class="row">
+          
+          <!-- Active Miners Count -->
+          <div class="col-md-3">
+            <div class="stat-item">
+              <h3 class="h4 text-info">{{ formatNumber(dashboardData?.total_miners || 0) }}</h3>
+              <p class="text-muted">Active Miners</p>
+            </div>
+          </div>
+          
+          <!-- Active Pools Count -->
+          <div class="col-md-3">
+            <div class="stat-item">
+              <h3 class="h4 text-success">{{ dashboardData?.active_pools || 0 }}</h3>
+              <p class="text-muted">Active Pools</p>
+            </div>
+          </div>
+          
+          <!-- Blocks Found in 24 Hours -->
+          <div class="col-md-3">
+            <div class="stat-item">
+              <h3 class="h4 text-primary">{{ dashboardData?.blocks_found_24h || 0 }}</h3>
+              <p class="text-muted">Blocks (24h)</p>
+            </div>
+          </div>
+          
+          <!-- Network Difficulty -->
+          <div class="col-md-3">
+            <div class="stat-item">
+              <h3 class="h4 text-warning">{{ formatDifficulty(dashboardData?.network_difficulty || 0) }}</h3>
+              <p class="text-muted">Difficulty</p>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

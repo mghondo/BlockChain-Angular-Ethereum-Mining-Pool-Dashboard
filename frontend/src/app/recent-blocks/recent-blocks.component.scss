@@ -1,0 +1,116 @@
+// ================================================================
+// CSS CUSTOM PROPERTIES (VARIABLES)
+// ================================================================
+
+:host {
+  --mining-orange: #FF6B35;        /* Primary accent color */
+  --mining-dark: #1a1d29;          /* Primary dark background */
+  --mining-charcoal: #2d3748;      /* Secondary dark background */
+  --mining-success: #10b981;       /* Success green */
+  --mining-warning: #f59e0b;       /* Warning amber */
+  --mining-danger: #ef4444;        /* Danger red */
+  --mining-info: #3b82f6;          /* Info blue */
+}
+
+// ================================================================
+// TABLE STYLING
+// ================================================================
+
+/**
+ * Enhanced table styling for recent blocks and data tables
+ * Includes hover effects and improved typography
+ */
+.table {
+  margin-bottom: 0;  /* Remove default bottom margin */
+  
+  /* Table header styling */
+  thead th {
+    background-color: #f8f9fa;        /* Light gray background */
+    border-top: none;                  /* Remove top border */
+    font-weight: 600;                  /* Semi-bold for headers */
+    color: var(--mining-dark);         /* Dark color for contrast */
+    padding: 1rem 0.75rem;            /* Comfortable padding */
+  }
+  
+  /* Table body rows with hover effects */
+  tbody tr {
+    transition: background-color 0.2s ease;  /* Smooth hover transition */
+    
+    &:hover {
+      background-color: rgba(255, 107, 53, 0.05);  /* Light orange hover */
+    }
+  }
+  
+  /* Table data cells */
+  td {
+    padding: 0.75rem;              /* Consistent padding */
+    vertical-align: middle;        /* Center align content vertically */
+    border-top: 1px solid #dee2e6;  /* Light gray border */
+  }
+}
+
+// ================================================================
+// CODE ELEMENT STYLING
+// ================================================================
+
+/**
+ * Enhanced styling for code elements (block numbers, addresses, etc.)
+ * Creates a distinctive appearance for technical data
+ */
+code {
+  background-color: rgba(255, 107, 53, 0.1);  /* Light orange background */
+  color: var(--mining-orange);                 /* Orange text color */
+  padding: 0.2rem 0.4rem;                     /* Comfortable padding */
+  border-radius: 0.25rem;                     /* Rounded corners */
+  font-weight: 600;                           /* Semi-bold for emphasis */
+}
+
+// ================================================================
+// COLOR UTILITY CLASSES
+// ================================================================
+
+/**
+ * Mining-themed color classes for consistent styling
+ */
+.text-primary {
+  color: var(--mining-info) !important;
+}
+
+.text-success {
+  color: var(--mining-success) !important;
+}
+
+.text-warning {
+  color: var(--mining-warning) !important;
+}
+
+.text-danger {
+  color: var(--mining-danger) !important;
+}
+
+.text-info {
+  color: var(--mining-info) !important;
+}
+
+// ================================================================
+// RESPONSIVE DESIGN
+// ================================================================
+
+/**
+ * Mobile-responsive adjustments for tables
+ * Ensures optimal viewing experience across all device sizes
+ */
+@media (max-width: 768px) {
+  /* Smaller table text on mobile */
+  .table-responsive {
+    font-size: 0.9rem;   /* Slightly smaller text for better fit */
+  }
+  
+  /* Adjust table padding on mobile */
+  .table {
+    thead th,
+    td {
+      padding: 0.5rem 0.4rem;  /* Reduced padding for mobile */
+    }
+  }
+}

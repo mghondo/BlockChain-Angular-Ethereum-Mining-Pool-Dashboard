@@ -18,305 +18,58 @@
   
   <!-- ================================================================ -->
   <!-- NAVIGATION HEADER -->
-  <!-- Professional header with branding and live data indicator -->
   <!-- ================================================================ -->
   
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-      <!-- Brand logo and title -->
-      <a class="navbar-brand" href="#">
-        <i class="fas fa-cube text-warning me-2"></i>
-        <strong>Ethereum Mining Dashboard</strong>
-      </a>
-      
-      <!-- Live data status indicator -->
-      <div class="navbar-nav ms-auto">
-        <span class="nav-item nav-link text-light">
-          <i class="fas fa-circle text-success me-1"></i>
-          Live Data
-        </span>
-      </div>
-    </div>
-  </nav>
+  <app-header></app-header>
 
   <!-- ================================================================ -->
   <!-- JUMBOTRON SECTION -->
-  <!-- Random background image rotated on each page load -->
   <!-- ================================================================ -->
   
-  <div class="jumbotron jumbotron-fluid" [style.background-image]="'url(' + selectedImage + ')'">
-    <div class="container text-center">
-      <div class="jumbotron-content">
-        <h1 class="display-2 text-white font-weight-bold mb-4">
-          Welcome to Mining Analytics
-        </h1>
-        <p class="lead text-white mb-4">
-          Real-time Ethereum mining pool statistics and blockchain insights
-        </p>
-        <a class="btn btn-warning btn-lg" href="#dashboard">
-          <i class="fas fa-chart-line me-2"></i>
-          View Dashboard
-        </a>
-      </div>
-    </div>
-  </div>
+  <app-jumbotron [selectedImage]="selectedImage"></app-jumbotron>
 
   <div class="container-fluid py-4" id="dashboard">
     
     <!-- ================================================================ -->
     <!-- HERO DASHBOARD SECTION -->
-    <!-- Main dashboard with total network statistics and key metrics -->
     <!-- ================================================================ -->
     
-    <div class="row mb-4">
-      <div class="col-12">
-        <!-- Hero card with primary network statistics -->
-        <div class="card hero-card">
-          <div class="card-body text-center">
-            
-            <!-- Primary metric: Total Network Hashrate -->
-            <h1 class="display-4 text-warning mb-3">
-              <i class="fas fa-tachometer-alt me-2"></i>
-              Total Network Hashrate
-            </h1>
-            
-            <!-- Dynamic hashrate display with loading state -->
-            <h2 class="display-3 mb-3" [class.loading]="isLoading">
-              {{ formatHashrate(dashboardData?.total_hashrate || 0) }}
-            </h2>
-            
-            <!-- Secondary statistics row -->
-            <div class="row">
-              
-              <!-- Active Miners Count -->
-              <div class="col-md-3">
-                <div class="stat-item">
-                  <h3 class="h4 text-info">{{ formatNumber(dashboardData?.total_miners || 0) }}</h3>
-                  <p class="text-muted">Active Miners</p>
-                </div>
-              </div>
-              
-              <!-- Active Pools Count -->
-              <div class="col-md-3">
-                <div class="stat-item">
-                  <h3 class="h4 text-success">{{ dashboardData?.active_pools || 0 }}</h3>
-                  <p class="text-muted">Active Pools</p>
-                </div>
-              </div>
-              
-              <!-- Blocks Found in 24 Hours -->
-              <div class="col-md-3">
-                <div class="stat-item">
-                  <h3 class="h4 text-primary">{{ dashboardData?.blocks_found_24h || 0 }}</h3>
-                  <p class="text-muted">Blocks (24h)</p>
-                </div>
-              </div>
-              
-              <!-- Network Difficulty -->
-              <div class="col-md-3">
-                <div class="stat-item">
-                  <h3 class="h4 text-warning">{{ formatDifficulty(dashboardData?.network_difficulty || 0) }}</h3>
-                  <p class="text-muted">Difficulty</p>
-                </div>
-              </div>
-              
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <app-dashboard-stats 
+      [dashboardData]="dashboardData" 
+      [isLoading]="isLoading"
+      [formatHashrate]="formatHashrate"
+      [formatNumber]="formatNumber"
+      [formatDifficulty]="formatDifficulty">
+    </app-dashboard-stats>
 
     <!-- ================================================================ -->
     <!-- MINING POOLS GRID SECTION -->
-    <!-- Individual pool cards with detailed statistics and performance -->
     <!-- ================================================================ -->
     
-    <div class="row mb-4">
-      <div class="col-12">
-        <div class="card">
-          
-          <!-- Section header -->
-          <div class="card-header">
-            <h4 class="card-title mb-0">
-              <i class="fas fa-swimming-pool text-info me-2"></i>
-              Mining Pools Overview
-            </h4>
-          </div>
-          
-          <div class="card-body">
-            
-            <!-- Pool cards grid - displays when data is loaded -->
-            <div class="row" *ngIf="pools.length > 0">
-              <div class="col-lg-3 col-md-6 mb-3" *ngFor="let pool of pools">
-                
-                <!-- Individual pool card -->
-                <div class="card pool-card h-100">
-                  <div class="card-body">
-                    
-                    <!-- Pool header: name and status -->
-                    <div class="d-flex justify-content-between align-items-start mb-2">
-                      <h5 class="card-title">{{ pool.name }}</h5>
-                      <span class="badge bg-success">{{ pool.status }}</span>
-                    </div>
-                    
-                    <!-- Pool statistics list -->
-                    <div class="pool-stats">
-                      
-                      <!-- Current hashrate with formatting -->
-                      <div class="stat-row">
-                        <span class="text-muted">Hashrate:</span>
-                        <span class="fw-bold">{{ formatHashrate(pool.hashrate) }}</span>
-                      </div>
-                      
-                      <!-- Active miners count -->
-                      <div class="stat-row">
-                        <span class="text-muted">Miners:</span>
-                        <span class="fw-bold">{{ formatNumber(pool.miners_count) }}</span>
-                      </div>
-                      
-                      <!-- Pool fee percentage -->
-                      <div class="stat-row">
-                        <span class="text-muted">Fee:</span>
-                        <span class="fw-bold">{{ pool.fee_percentage }}%</span>
-                      </div>
-                      
-                      <!-- 7-day luck with color coding -->
-                      <div class="stat-row">
-                        <span class="text-muted">Luck (7d):</span>
-                        <span class="fw-bold" [class]="getLuckClass(pool.luck_7d)">
-                          {{ pool.luck_7d.toFixed(1) }}%
-                        </span>
-                      </div>
-                      
-                      <!-- Payout method (PPLNS, PPS, etc.) -->
-                      <div class="stat-row">
-                        <span class="text-muted">Method:</span>
-                        <span class="fw-bold">{{ pool.payout_method }}</span>
-                      </div>
-                      
-                    </div>
-                  </div>
-                </div>
-                
-              </div>
-            </div>
-            
-            <!-- Loading state display -->
-            <div *ngIf="pools.length === 0" class="text-center py-4">
-              <div class="spinner-border text-warning" role="status" *ngIf="isLoading">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-              <p class="text-muted mt-2">Loading mining pools data...</p>
-            </div>
-            
-          </div>
-        </div>
-      </div>
-    </div>
+    <app-pools-grid 
+      [pools]="pools" 
+      [isLoading]="isLoading"
+      [formatHashrate]="formatHashrate"
+      [formatNumber]="formatNumber"
+      [getLuckClass]="getLuckClass">
+    </app-pools-grid>
 
     <!-- ================================================================ -->
     <!-- RECENT BLOCKS TABLE SECTION -->
-    <!-- Table showing latest blocks found by mining pools -->
     <!-- ================================================================ -->
     
-    <div class="row">
-      <div class="col-12">
-        <div class="card">
-          
-          <!-- Section header -->
-          <div class="card-header">
-            <h4 class="card-title mb-0">
-              <i class="fas fa-cubes text-success me-2"></i>
-              Recent Blocks Found
-            </h4>
-          </div>
-          
-          <div class="card-body">
-            
-            <!-- Blocks table - displays when blocks are available -->
-            <div class="table-responsive" *ngIf="dashboardData && dashboardData.recent_blocks && dashboardData.recent_blocks.length > 0">
-              <table class="table table-hover">
-                
-                <!-- Table headers -->
-                <thead>
-                  <tr>
-                    <th>Block #</th>        <!-- Ethereum block number -->
-                    <th>Pool</th>           <!-- Which pool found it -->
-                    <th>Reward (ETH)</th>   <!-- Block reward amount -->
-                    <th>Time</th>           <!-- When it was found -->
-                  </tr>
-                </thead>
-                
-                <!-- Table rows with block data -->
-                <tbody>
-                  <tr *ngFor="let block of dashboardData.recent_blocks">
-                    
-                    <!-- Block number with code styling -->
-                    <td>
-                      <code class="text-primary">#{{ block.block_number }}</code>
-                    </td>
-                    
-                    <!-- Pool name that found the block -->
-                    <td>
-                      <span class="fw-bold">{{ block.pool_name }}</span>
-                    </td>
-                    
-                    <!-- Block reward in ETH with success styling -->
-                    <td>
-                      <span class="text-success fw-bold">{{ block.reward }} ETH</span>
-                    </td>
-                    
-                    <!-- Human-readable time ago -->
-                    <td class="text-muted">
-                      {{ getTimeAgo(block.timestamp) }}
-                    </td>
-                    
-                  </tr>
-                </tbody>
-                
-              </table>
-            </div>
-            
-            <!-- Empty state when no blocks are available -->
-            <div *ngIf="!dashboardData || !dashboardData.recent_blocks || dashboardData.recent_blocks.length === 0" class="text-center py-4">
-              <p class="text-muted">No recent blocks found</p>
-            </div>
-            
-          </div>
-        </div>
-      </div>
-    </div>
+    <app-recent-blocks 
+      [dashboardData]="dashboardData"
+      [getTimeAgo]="getTimeAgo">
+    </app-recent-blocks>
     
   </div>
 
   <!-- ================================================================ -->
   <!-- FOOTER SECTION -->
-  <!-- Branding and last updated timestamp -->
   <!-- ================================================================ -->
   
-  <footer class="bg-dark text-light py-4 mt-5">
-    <div class="container">
-      <div class="row">
-        
-        <!-- Left side: Branding -->
-        <div class="col-md-6">
-          <p class="mb-0">
-            <i class="fas fa-cube text-warning me-2"></i>
-            Ethereum Mining Pool Dashboard
-          </p>
-          <small class="text-muted">Real-time mining pool analytics</small>
-        </div>
-        
-        <!-- Right side: Last updated timestamp -->
-        <div class="col-md-6 text-end">
-          <small class="text-muted">
-            Last updated: {{ dashboardData?.last_updated | date:'medium' }}
-          </small>
-        </div>
-        
-      </div>
-    </div>
-  </footer>
+  <app-footer [dashboardData]="dashboardData"></app-footer>
   
 </div>
 

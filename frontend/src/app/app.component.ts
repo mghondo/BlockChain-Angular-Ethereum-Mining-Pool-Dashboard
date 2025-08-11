@@ -22,6 +22,12 @@ import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { RouterOutlet } from '@angular/router';
 import { interval, Subscription } from 'rxjs';
+import { HeaderComponent } from './header/header.component';
+import { JumbotronComponent } from './jumbotron/jumbotron.component';
+import { DashboardStatsComponent } from './dashboard-stats/dashboard-stats.component';
+import { PoolsGridComponent } from './pools-grid/pools-grid.component';
+import { RecentBlocksComponent } from './recent-blocks/recent-blocks.component';
+import { FooterComponent } from './footer/footer.component';
 
 // ================================================================
 // TYPE DEFINITIONS
@@ -86,7 +92,7 @@ interface ApiResponse<T> {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, HttpClientModule, RouterOutlet],
+  imports: [CommonModule, HttpClientModule, RouterOutlet, HeaderComponent, JumbotronComponent, DashboardStatsComponent, PoolsGridComponent, RecentBlocksComponent, FooterComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
